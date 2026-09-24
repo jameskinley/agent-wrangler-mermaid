@@ -1,0 +1,15 @@
+.mmd-diagram {
+  margin: 0.6em 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.mmd-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* A fence mermaid couldn't parse stays as code; the reason is in its title. */
+pre.mmd-error {
+  border-left: 3px solid var(--red-fg);
+}

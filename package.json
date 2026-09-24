@@ -1,0 +1,17 @@
+{
+  "name": "aw-ext-mermaid",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent Wrangler extension: renders ```mermaid fences in the markdown previews as diagrams.",
+  "wranglerExtension": {
+    "id": "mermaid",
+    "label": "Mermaid diagrams",
+    "description": "Renders ```mermaid code blocks as diagrams in the markdown file preview, the task-memory preview and the chat view.",
+    "requires": []
+  },
+  "scripts": {
+    "vendor": "sh scripts/vendor-mermaid.sh"
+  },
+  "license": "Apache-2.0"
+}
