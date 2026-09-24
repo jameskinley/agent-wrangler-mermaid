@@ -2,7 +2,7 @@
 
 An [Agent Wrangler](https://github.com/PortSwigger/agent-wrangler) extension that renders ` ```mermaid ` code blocks as diagrams wherever the board renders markdown: the `.md` file preview, the task-memory preview and the chat view.
 
-Diagrams follow the board's light or dark theme. A block mermaid can't parse stays as code with a red edge; hover it for the error. Turning the extension off puts the original code blocks back.
+Hover a diagram for GitHub-style zoom and pan controls, or drag it to pan. Diagrams follow the board's light or dark theme. A block mermaid can't parse stays as code with a red edge; hover it for the error. Turning the extension off puts the original code blocks back.
 
 Browser-only: no tools, no capabilities, no dependencies. Mermaid itself (about 5.5 MB) is fetched the first time a diagram appears on screen.
 

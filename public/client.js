@@ -69,11 +69,72 @@ function renderSvg(source, forTheme) {
   return job;
 }
 
+const PAN_STEP = 50;
+const ZOOM_STEP = 1.25;
+const MIN_SCALE = 0.25;
+const MAX_SCALE = 8;
+
+// Laid out as a 3×3 pad: pan arrows round a reset, zoom in/out in the corners.
+const CONTROLS = [
+  ['pan-up', '↑', 'Pan up'], ['zoom-in', '+', 'Zoom in'],
+  ['pan-left', '←', 'Pan left'], ['reset', '↺', 'Reset view'], ['pan-right', '→', 'Pan right'],
+  ['pan-down', '↓', 'Pan down'], ['zoom-out', '−', 'Zoom out'],
+];
+
+function addPanZoom(fig, canvas) {
+  let x = 0, y = 0, scale = 1;
+  const apply = () => { canvas.style.transform = `translate(${x}px, ${y}px) scale(${scale})`; };
+  const zoom = (factor) => { scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * factor)); };
+  const actions = {
+    'pan-up': () => { y -= PAN_STEP; },
+    'pan-down': () => { y += PAN_STEP; },
+    'pan-left': () => { x -= PAN_STEP; },
+    'pan-right': () => { x += PAN_STEP; },
+    'zoom-in': () => zoom(ZOOM_STEP),
+    'zoom-out': () => zoom(1 / ZOOM_STEP),
+    reset: () => { x = 0; y = 0; scale = 1; },
+  };
+
+  const controls = document.createElement('div');
+  controls.className = 'mmd-controls';
+  for (const [action, glyph, label] of CONTROLS) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `mmd-btn mmd-${action}`;
+    btn.textContent = glyph;
+    btn.title = label;
+    btn.setAttribute('aria-label', label);
+    btn.addEventListener('click', () => { actions[action](); apply(); });
+    controls.appendChild(btn);
+  }
+  fig.appendChild(controls);
+
+  let drag = null;
+  fig.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 || e.target.closest('.mmd-controls')) return;
+    drag = { px: e.clientX, py: e.clientY, x, y };
+    fig.setPointerCapture(e.pointerId);
+    fig.classList.add('mmd-dragging');
+  });
+  fig.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    x = drag.x + e.clientX - drag.px;
+    y = drag.y + e.clientY - drag.py;
+    apply();
+  });
+  const end = () => { drag = null; fig.classList.remove('mmd-dragging'); };
+  fig.addEventListener('pointerup', end);
+  fig.addEventListener('pointercancel', end);
+}
+
 function diagramElement({ svg, id }, source) {
   const fig = document.createElement('div');
   fig.className = 'mmd-diagram';
-  const fresh = nextId();
-  fig.innerHTML = svg.split(id).join(fresh);
+  const canvas = document.createElement('div');
+  canvas.className = 'mmd-canvas';
+  canvas.innerHTML = svg.split(id).join(nextId());
+  fig.appendChild(canvas);
+  addPanZoom(fig, canvas);
   sources.set(fig, source);
   return fig;
 }

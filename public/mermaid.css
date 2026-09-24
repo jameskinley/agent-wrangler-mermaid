@@ -1,13 +1,68 @@
 .mmd-diagram {
+  position: relative;
   margin: 0.6em 0;
-  overflow-x: auto;
-  text-align: center;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
 }
 
-.mmd-diagram svg {
+.mmd-diagram.mmd-dragging {
+  cursor: grabbing;
+}
+
+.mmd-canvas {
+  text-align: center;
+  transform-origin: center;
+}
+
+.mmd-canvas svg {
   max-width: 100%;
   height: auto;
 }
+
+/* GitHub-style pad in the bottom-right corner, shown while the diagram is
+   hovered or a control has focus. */
+.mmd-controls {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 24px);
+  grid-template-rows: repeat(3, 24px);
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.mmd-diagram:hover .mmd-controls,
+.mmd-controls:focus-within {
+  opacity: 1;
+}
+
+.mmd-btn {
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--fg);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.mmd-btn:hover {
+  border-color: var(--fg-muted);
+}
+
+.mmd-pan-up { grid-area: 1 / 2; }
+.mmd-zoom-in { grid-area: 1 / 3; }
+.mmd-pan-left { grid-area: 2 / 1; }
+.mmd-reset { grid-area: 2 / 2; }
+.mmd-pan-right { grid-area: 2 / 3; }
+.mmd-pan-down { grid-area: 3 / 2; }
+.mmd-zoom-out { grid-area: 3 / 3; }
 
 /* A fence mermaid couldn't parse stays as code; the reason is in its title. */
 pre.mmd-error {
