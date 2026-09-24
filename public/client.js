@@ -86,10 +86,10 @@ function addPanZoom(fig, canvas) {
   const apply = () => { canvas.style.transform = `translate(${x}px, ${y}px) scale(${scale})`; };
   const zoom = (factor) => { scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * factor)); };
   const actions = {
-    'pan-up': () => { y -= PAN_STEP; },
-    'pan-down': () => { y += PAN_STEP; },
-    'pan-left': () => { x -= PAN_STEP; },
-    'pan-right': () => { x += PAN_STEP; },
+    'pan-up': () => { y += PAN_STEP; },
+    'pan-down': () => { y -= PAN_STEP; },
+    'pan-left': () => { x += PAN_STEP; },
+    'pan-right': () => { x -= PAN_STEP; },
     'zoom-in': () => zoom(ZOOM_STEP),
     'zoom-out': () => zoom(1 / ZOOM_STEP),
     reset: () => { x = 0; y = 0; scale = 1; },
