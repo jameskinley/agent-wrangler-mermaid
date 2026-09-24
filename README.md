@@ -11,7 +11,7 @@ Browser-only: no tools, no capabilities, no dependencies. Mermaid itself (about 
 In the wrangler's Extensions tab, install from this repository's git URL. It asks for no capabilities!
 
 ```
-git clone https://github.com/jameskinley/agent-wrangler-mermaid
+https://github.com/jameskinley/agent-wrangler-mermaid
 ```
 
 ## How it works
