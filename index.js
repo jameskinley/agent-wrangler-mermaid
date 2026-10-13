@@ -10,7 +10,7 @@ export const dir = path.dirname(fileURLToPath(import.meta.url));
 export default {
   id: 'mermaid',
   label: 'Mermaid diagrams',
-  help: 'Renders ```mermaid code blocks as diagrams in the markdown file preview, the task-memory preview and the chat view.',
+  help: 'Renders ```mermaid code blocks as diagrams in the markdown file preview, the task-memory preview, the chat view and the bookshelf extension\'s preview.',
   defaultEnabled: true,
   engines: { wranglerApi: '^1.0.0' },
   client: 'public/client.js',

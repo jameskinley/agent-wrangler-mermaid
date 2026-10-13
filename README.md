@@ -1,6 +1,6 @@
 # Mermaid diagrams
 
-An [Agent Wrangler](https://github.com/PortSwigger/agent-wrangler) extension that renders ` ```mermaid ` code blocks as diagrams wherever the board renders markdown: the `.md` file preview, the task-memory preview and the chat view.
+An [Agent Wrangler](https://github.com/PortSwigger/agent-wrangler) extension that renders ` ```mermaid ` code blocks as diagrams wherever the board renders markdown: the `.md` file preview, the task-memory preview, the chat view and the bookshelf extension's preview.
 
 Hover a diagram for GitHub-style zoom and pan controls, or drag it to pan. Diagrams follow the board's light or dark theme. A block mermaid can't parse stays as code with a red edge; hover it for the error. Turning the extension off puts the original code blocks back.
 
@@ -16,7 +16,7 @@ https://github.com/jameskinley/agent-wrangler-mermaid
 
 ## How it works
 
-The wrangler has no slot for markdown rendering, so `public/client.js` watches the three containers the core renderer writes into (`#file-body`, `#memory-preview`, `#chat-stream`) and swaps each `<pre><code class="language-mermaid">` for an SVG. If a future wrangler renames one of those containers, that view stops getting diagrams and nothing else breaks.
+The wrangler has no slot for markdown rendering, so `public/client.js` watches the document for the containers the core renderer writes into (`#file-body`, `#memory-preview`, `#chat-stream`, and any element with core's `file-body` class, which is how the bookshelf extension's preview is picked up) and swaps each `<pre><code class="language-mermaid">` for an SVG. If a future wrangler renames one of those containers, that view stops getting diagrams and nothing else breaks.
 
 ## Develop
 

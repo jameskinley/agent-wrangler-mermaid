@@ -1,19 +1,20 @@
 // Browser half. Swaps ```mermaid fences for rendered diagrams wherever the board
-// renders markdown: the .md file preview, the task-memory preview and the chat
-// view's assistant prose.
+// renders markdown: the .md file preview, the task-memory preview, the chat
+// view's assistant prose, and any other preview carrying core's `file-body`
+// class (the bookshelf extension's, for one).
 //
 // There is no slot for markdown rendering, so this works off the markup the core
 // renderer (markdown-it) emits for a fence — <pre><code class="language-mermaid">
-// — inside the three containers it renders into. If core renames one of those
-// ids, that surface quietly stops getting diagrams and nothing else breaks.
+// — inside those containers. They can appear at any time (another extension's
+// panel), so the whole document is watched. If core renames one of them, that
+// surface quietly stops getting diagrams and nothing else breaks.
 //
 // A module with no contributions is never told it was switched off, so the
 // observers check for this extension's own <link> on every callback — the loader
 // removes it on unload — and put the original code blocks back once it is gone.
 
 const EXT_ID = 'mermaid';
-const ROOT_IDS = ['file-body', 'memory-preview', 'chat-stream'];
-const BLOCK = 'pre > code.language-mermaid';
+const BLOCKS = ':is(#file-body, .file-body, #memory-preview, #chat-stream) pre > code.language-mermaid';
 const SCRIPT_URL = new URL('./vendor/mermaid.min.js', import.meta.url).href;
 const CACHE_LIMIT = 100;
 
@@ -171,9 +172,7 @@ function upgrade(code) {
 }
 
 function scan() {
-  for (const id of ROOT_IDS) {
-    for (const code of document.getElementById(id)?.querySelectorAll(BLOCK) || []) upgrade(code);
-  }
+  for (const code of document.querySelectorAll(BLOCKS)) upgrade(code);
 }
 
 function revertAll() {
@@ -212,10 +211,7 @@ function start() {
   if (contentObserver) return;
   theme = currentTheme();
   contentObserver = new MutationObserver(onContent);
-  for (const id of ROOT_IDS) {
-    const root = document.getElementById(id);
-    if (root) contentObserver.observe(root, { childList: true, subtree: true });
-  }
+  contentObserver.observe(document.body, { childList: true, subtree: true });
   themeObserver = new MutationObserver(onTheme);
   themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   scan();
