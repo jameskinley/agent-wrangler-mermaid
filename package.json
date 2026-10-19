@@ -7,7 +7,7 @@
   "wranglerExtension": {
     "id": "mermaid",
     "label": "Mermaid diagrams",
-    "description": "Renders ```mermaid code blocks as diagrams in the markdown file preview, the task-memory preview, the chat view and the bookshelf extension's preview.",
+    "description": "Renders mermaid code blocks as diagrams in markdown previews.",
     "requires": []
   },
   "scripts": {
